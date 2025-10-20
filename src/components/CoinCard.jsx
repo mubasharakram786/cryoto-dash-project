@@ -11,7 +11,7 @@ const CoinCard = ({coin}) => {
                 </div>
               </div>
                 <p>Price: {coin.current_price.toLocaleString('en-US',{style:'currency', currency:'USD'})}</p>
-                <p className={coin.price_change_percentage_24h >=0 ? 'positive' : 'negative'}>{coin.price_change_percentage_24h}%</p>
+                <p className={coin.price_change_percentage_24h >=0 ? 'positive' : 'negative'}>{Number(coin.price_change_percentage_24h)?.toFixed(2)}%</p>
                 <p>Market cap: {coin.market_cap.toLocaleString()}</p>
             </div>
   )
