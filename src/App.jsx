@@ -1,9 +1,10 @@
 import {useState,useEffect} from 'react'
-import CoinCard from './components/CoinCard'
-import LimitSelect from './components/LimitSelect'
-import FilterInput from './components/FilterInput'
-import SortSelector from './components/SortSelector'
-
+import { Routes,Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import About from './pages/About'
+import Header from './components/Header'
+import NotFoundPage from './pages/not-found'
+import CoinDetailPage from './pages/coin-detail'
 const App = () => {
   const [coins,setCoins] = useState([])
   const [loading,setLoading] = useState(true)
@@ -28,43 +29,26 @@ const App = () => {
     }
     fetchCoins()
   },[limit])
-    const filteredCoins = coins.filter((coin)=>{
-      return coin.name.toLowerCase().includes(filter.toLocaleLowerCase()) ||
-      coin.symbol.toLowerCase().includes(filter.toLocaleLowerCase())
-    }).slice().sort((a,b)=>{
-      switch(sortBy){
-        case 'market_cap_asc':
-          return a.market_cap - b.market_cap
-        case 'market_cap_desc':
-          return b.market_cap - a.market_cap
-        case 'price_asc':
-          return a.current_price - b.current_price
-        case 'price_desc':
-          return b.current_price - a.current_price  
-        case 'change_desc':
-          return b.price_change_percentage_24h - a.price_change_percentage_24h
-        case 'change_asc':
-          return a.price_change_percentage_24h - b.price_change_percentage_24h
-      }
-    })
+   
   return(
     <>
-    <h1>🚀 Crypto Dash</h1>
-  {loading && <p>Loading</p>}
-  {error && <div className='error'>{error}</div>}
-  <div className="top-controls">
-
-       <FilterInput filter={filter} onFilterChange={setFilter} /> 
-      <LimitSelect limit={limit} onLimitChange={setLimit} />
-      <SortSelector sortBy={sortBy} onSortChange={setSortBy}/>
-  </div>
-    {!loading && !error && (
-      <main className='grid'>
-          {filteredCoins.length > 0 ? filteredCoins.map((coin)=>(
-            <CoinCard coin={coin} key={coin.id}/>
-          )): <p>No matching coins</p>}
-      </main>
-    )}
+      <Header/>
+      <Routes>
+        <Route path='/' element={<HomePage
+        loading={loading}
+        error={error}
+        coins={coins}
+        limit={limit}
+        setLimit={setLimit}
+        filter={filter}
+        setFilter={setFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        />}/>
+        <Route path='/about' element={<About/>} />
+        <Route path='/coin/:id' element={<CoinDetailPage/>}/>
+        <Route path='*' element={<NotFoundPage/>}/>
+      </Routes>
     </>
 
   )
