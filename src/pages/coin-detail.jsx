@@ -1,6 +1,7 @@
 import { useState,useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
-
+import Loader from "../components/Loader"
+import CoinChart from "../components/CoinChart"
 const CoinDetailPage = () =>{
     const [coin , setCoin] = useState(null)
     const [loading,setLoading] = useState(true)
@@ -31,7 +32,7 @@ const CoinDetailPage = () =>{
             <h1 className="coin-details-title">
                 {coin ? `${coin.name} (${coin.symbol.toUpperCase()})` : 'Coin Details' }
             </h1>
-            {loading && <p >loading...</p>}
+            {loading && <Loader/>}
             {error && <div className="error">{error}</div>}
             {!loading && !error && (
                 <>
@@ -58,6 +59,8 @@ const CoinDetailPage = () =>{
                         </h4>
                         <h4>Last Updated: {new Date(coin.last_updated).toLocaleString()}</h4>
                     </div>
+
+                    <CoinChart coinId={coin.id}/>
                     <div className="coin-details-links">
                         {coin.links.homepage[0] && (
                             <p>

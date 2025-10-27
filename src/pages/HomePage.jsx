@@ -1,6 +1,7 @@
 import CoinCard from '../components/CoinCard'
 import FilterInput from '../components/FilterInput'
 import LimitSelect from '../components/LimitSelect'
+import Loader from '../components/Loader'
 import SortSelector from '../components/SortSelector'
 
 const HomePage = ({
@@ -36,7 +37,7 @@ const HomePage = ({
    return(
     <>
     <h1>🚀 Crypto Dash</h1>
-  {loading && <p>Loading</p>}
+  {loading && <Loader/>}
   {error && <div className='error'>{error}</div>}
   <div className="top-controls">
 
